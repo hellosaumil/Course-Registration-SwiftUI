@@ -1,0 +1,18 @@
+[
+    {
+        "courseNumber": "CS 646",
+        "courseRoomNumber": "GC 1504",
+        "courseStartTime": "07:00 PM"
+    },
+    
+    {
+        "courseNumber": "CS 101",
+        "courseRoomNumber": "GMCS 111",
+        "courseStartTime": "01:00 PM"
+    },
+    {
+        "courseNumber": "CS 202",
+        "courseRoomNumber": "AH 222",
+        "courseStartTime": "02:00 PM"
+    }
+]
