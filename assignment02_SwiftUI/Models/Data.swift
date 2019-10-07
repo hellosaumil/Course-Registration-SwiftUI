@@ -12,34 +12,20 @@ import UIKit
 import SwiftUI
 import Foundation
 
-//let studentData: StudentInfo = loadStudentData("studentData.json")
-//let courseListData: [CourseInfo] =
-//
-//    CourseInfo(loadCourseListData("courseList.json").courseNumber, loadCourseListData("courseList.json").courseRoomNumber, loadCourseListData("courseList.json").courseStartTime)
 
-
-let someStudent:StudentInfo = StudentInfo("", "@", "000000000", [])!
-
-
-let StudentInfoStructureData: StudentInfoStructure = loadStudentData("studentData.json")
 let courseInfoStructureData: [CourseInfoStructure] = loadCourseListData("courseList.json")
+let courseListData: [CourseInfo] = loadCourseList(courseInfoStructureData)
 
-
+let someStudent:StudentInfo = StudentInfo("", "@", "---------", [])!
+let StudentInfoStructureData: StudentInfoStructure = loadStudentData("studentData.json")
 let studentData: StudentInfo = StudentInfo(fromStudent: StudentInfoStructureData) ?? someStudent
 
-let courseListData: [CourseInfo] = createCourseLists(courseInfoStructureData)
-
-
-
-//for course in courseInfoStructureData {
-//    courseListData.append(CourseInfo(course.courseNumber, course.courseRoomNumber, course.courseStartTime))
-//}
 
 let courseSelection: Dictionary<CourseInfo, Bool> = Dictionary(uniqueKeysWithValues: courseListData.map({ ($0, false) }))
 
 
 
-
+// MARK: User Defined Functino
 //
 // User Defined Functions for Loading Student and Course Data
 //
@@ -52,8 +38,8 @@ func loadStudentData(_ filename: String) -> StudentInfoStructure {
         loadedStudentData = try load(filename)
     } catch {
         
-        let sampleStudent = StudentInfoStructure("", "@", "000000000", [])
-        loadedStudentData = sampleStudent
+        let sampleStudentInfoStruct = StudentInfoStructure("", "@", "---------", [])
+        loadedStudentData = sampleStudentInfoStruct
     }
     
     return loadedStudentData
@@ -75,7 +61,7 @@ func loadCourseListData(_ filename: String) -> [CourseInfoStructure] {
     return loadedCourseListData
 }
 
-func createCourseLists(_ courses: [CourseInfoStructure]) -> [CourseInfo] {
+func loadCourseList(_ courses: [CourseInfoStructure]) -> [CourseInfo] {
     
     var coursesList = [CourseInfo]()
     

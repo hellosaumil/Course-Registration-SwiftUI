@@ -1,16 +1,63 @@
 [
     {
+        "courseTitle": "Intro Swift App Development",
         "courseNumber": "CS 646",
         "courseRoomNumber": "GC 1504",
         "courseStartTime": "07:00 PM"
     },
     
     {
+        "courseTitle": "Machine Learning",
+        "courseNumber": "CS 596",
+        "courseRoomNumber": "LSS 365",
+        "courseStartTime": "02:00 PM"
+    },
+    
+    {
+        "courseTitle": "Programming for Bio-informatics",
+        "courseNumber": "CS 696",
+        "courseRoomNumber": "GMCS 325",
+        "courseStartTime": "05:30 PM"
+    },
+    
+    {
+        "courseTitle": "Computer Vision",
+        "courseNumber": "CS 559",
+        "courseRoomNumber": "P 249",
+        "courseStartTime": "05:30 PM"
+    },
+    
+    {
+        "courseTitle": "Combinatorial Algorithms",
+        "courseNumber": "CS 660",
+        "courseRoomNumber": "EBA 412",
+        "courseStartTime": "04:00 PM"
+    },
+    
+    
+    {
+        "courseTitle": "Big Data Tools and Methods",
+        "courseNumber": "CS 696",
+        "courseRoomNumber": "M 245",
+        "courseStartTime": "05:00 PM"
+    },
+
+    
+    {
+        "courseTitle": "Speech Processing",
+        "courseNumber": "CS 682",
+        "courseRoomNumber": "EBA 260",
+        "courseStartTime": "12:30 PM"
+    },
+    
+    {
+        "courseTitle": "Course 101 with very very long course Name",
         "courseNumber": "CS 101",
         "courseRoomNumber": "GMCS 111",
         "courseStartTime": "01:00 PM"
     },
     {
+        "courseTitle": "Course 202",
         "courseNumber": "CS 202",
         "courseRoomNumber": "AH 222",
         "courseStartTime": "02:00 PM"

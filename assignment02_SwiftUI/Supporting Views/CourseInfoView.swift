@@ -12,35 +12,72 @@ struct CourseInfoView: View {
     
     @State var courseInformation: CourseInfo
     
+    private func displayText(_ txtMsg:String = "Empty Text Message", _ fontStyle: Font.TextStyle = .body, _ fontDesign: Font.Design = .default) -> Text {
+        
+        return Text(txtMsg)
+            .font(.system(fontStyle, design: fontDesign))
+    }
+    
     var body: some View {
-
+        
         HStack(alignment: .center) {
             
-            VStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: 4) {
                 
-                Text("\(courseInformation.courseNumber)")
-                    .font(.system(.headline, design: .serif))
+                displayText("\(courseInformation.courseNumber)", .title, .serif)
                     .bold()
+                    .lineLimit(1)
+                    .truncationMode(.middle)
                 
-                Text("\(courseInformation.courseRoomNumber)")
-                    .font(.system(.subheadline, design: .monospaced))
+                Divider()
+                
+                displayText("\(courseInformation.courseTitle)", .body, .rounded)
+                    .lineLimit(3)
+                    .truncationMode(.middle)
+                    .frame(height: 45)
+                //                    .frame(width:200)
+                
+                
             }
-            Spacer()
+                .frame(width:UIScreen.main.bounds.width * 0.45, alignment: .leading)
             
-            Text("\(courseInformation.courseStartTime)")
-                .font(.system(.callout, design: .rounded))
+            Divider()
+            Spacer().frame(width: UIScreen.main.bounds.width * 0.045)
+            
+            
+            VStack(alignment: .leading, spacing: 4) {
+                
+                displayText("\(courseInformation.courseStartTime)", .body, .monospaced)
+                    .bold()
+                    .lineLimit(1)
+                
+                Divider()
+                
+                displayText("\(courseInformation.courseRoomNumber)", .body, .monospaced)
+                    .lineLimit(2)
+                    .frame(height: 32.33)
+                
+            }
+            .frame(width: UIScreen.main.bounds.width * 0.30, alignment: .leading)
+            
         }
-        .padding(.leading, 32)
-        .padding(.trailing, 32)
-        .padding(.top, 8)
-        .padding(.bottom, 8)
+        .contextMenu {
+                Text("Course Number: \(self.courseInformation.courseNumber)")
+                Text("Course Name: \(self.courseInformation.courseTitle)")
+                Text("Location: \(self.courseInformation.courseRoomNumber)")
+                Text("Time: \(self.courseInformation.courseStartTime)")
+        }
+        //        .frame(alignment: .leading)
+        
     }
 }
 
-let someCourse = CourseInfo("CS 123", "GMCS 456", "09:59 PM")
+let someCourse = CourseInfo("Some Very Unecessary Long Needs to be Truncated Course Name", "CS 123", "GMCS 456", "09:59 PM")
 
 struct CourseInfoView_Previews: PreviewProvider {
     static var previews: some View {
         CourseInfoView(courseInformation: someCourse)
+            .previewDevice(PreviewDevice(rawValue: "iPhone XS"))
+            .previewDisplayName("iPhone XS")
     }
 }

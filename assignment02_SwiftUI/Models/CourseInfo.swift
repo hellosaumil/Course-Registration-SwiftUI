@@ -1,26 +1,16 @@
-struct CourseInfo: Hashable, Codable, Identifiable, CourseInfoProtocol {
+struct CourseInfo: Hashable, Codable, CourseInfoProtocol {
     
-    let id: String
+//    let id: String
+    let courseTitle:String
     let courseNumber: String
     let courseRoomNumber: String
     let courseStartTime: String
     
     
-    //    init() {
-    //        self.id = super.courseNumber
-    //    }
-    //
-    //    required init(from decoder: Decoder) throws {
-    //        fatalError("init(from:) has not been implemented")
-    //    }
-    
-    //    let courseNumber:String
-    //    let courseRoomNumber:String
-    //    let courseStartTime:String
-    //
-    
-    init(_ courseNumber:String, _ courseRoomNumber:String, _ courseStartTime:String) {
-        self.id = courseNumber
+    init(_ courseTitle:String, _ courseNumber:String, _ courseRoomNumber:String, _ courseStartTime:String) {
+//        self.id = courseNumber
+        
+        self.courseTitle = courseTitle
         self.courseNumber = courseNumber
         self.courseRoomNumber = courseRoomNumber
         self.courseStartTime = courseStartTime
@@ -28,7 +18,7 @@ struct CourseInfo: Hashable, Codable, Identifiable, CourseInfoProtocol {
     
     init(fromCourse course:CourseInfoStructure) {
         
-        self.init(course.courseNumber, course.courseRoomNumber, course.courseStartTime)
+        self.init(course.courseTitle, course.courseNumber, course.courseRoomNumber, course.courseStartTime)
         
         //for course in courseInfoStructureData {
         //    courseListData.append(CourseInfo(course.courseNumber, course.courseRoomNumber, course.courseStartTime))
@@ -38,12 +28,14 @@ struct CourseInfo: Hashable, Codable, Identifiable, CourseInfoProtocol {
 
 struct CourseInfoStructure: CourseInfoProtocol, Hashable, Codable {
     
+    let courseTitle: String
     let courseNumber: String
     let courseRoomNumber: String
     let courseStartTime: String
     
-    init(_ courseNumber:String, _ courseRoomNumber:String, _ courseStartTime:String) {
+    init(_ courseTitle:String, _ courseNumber:String, _ courseRoomNumber:String, _ courseStartTime:String) {
         
+        self.courseTitle = courseTitle
         self.courseNumber = courseNumber
         self.courseRoomNumber = courseRoomNumber
         self.courseStartTime = courseStartTime
@@ -52,6 +44,7 @@ struct CourseInfoStructure: CourseInfoProtocol, Hashable, Codable {
 
 protocol CourseInfoProtocol {
     
+    var courseTitle:String { get }
     var courseNumber:String { get }
     var courseRoomNumber:String { get }
     var courseStartTime:String { get }

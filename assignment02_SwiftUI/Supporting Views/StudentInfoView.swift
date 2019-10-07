@@ -13,6 +13,7 @@ struct StudentInfoView: View {
     
     @EnvironmentObject var userData: UserData
     @State var showingModal = false
+    @State var showPopover: Bool = false
     
     public var profileIcon: some View {
         Image(systemName: "person.crop.circle")
@@ -29,7 +30,7 @@ struct StudentInfoView: View {
                 if userData.currentStudent.studentName != "" {
                     Text(userData.currentStudent.studentName)
                         .bold()
-                        .font(.system(.title, design: .monospaced))
+                        .font(.system(.title, design: .serif))
                         .truncationMode(.middle)
                         .lineLimit(1)
                         
@@ -39,15 +40,15 @@ struct StudentInfoView: View {
                 } else {
                     Text("No Record")
                         .bold()
-                        .font(.system(.title, design: .monospaced))
+                        .font(.system(.title, design: .serif))
                 }
                 
-                Divider()
+//                Divider()
                 
                 VStack(alignment: .leading, spacing: 2) {
                     
                     
-                    if userData.currentStudent.studentRedID != "" {
+                    if userData.currentStudent.studentRedID != "---------" {
                         
                         Text("Red ID: \(userData.currentStudent.studentRedID)")
                             .font(.system(.body, design: .monospaced))
@@ -62,11 +63,15 @@ struct StudentInfoView: View {
                     
                     if userData.currentStudent.studentEmail != "@" {
                         Text("Email: \(userData.currentStudent.studentEmail)")
-                            .font(.system(.body))
+                            .font(.system(.body, design: .rounded))
+                            .truncationMode(.middle)
+                            .lineLimit(1)
+                            .frame(maxWidth: .infinity,  alignment: .leading)
+                        
                         
                     } else {
                         Text("Email: No Record")
-                            .font(.system(.body))
+                            .font(.system(.body, design: .rounded))
                     }
                     
                     //                    Spacer()
@@ -78,8 +83,10 @@ struct StudentInfoView: View {
                 self.showingModal.toggle()
             })
             {
-                profileIcon
-                Text("Update Profile")
+                VStack(alignment: .center) {
+                    profileIcon
+                    Text("Update Profile")
+                }
             }
             .sheet(isPresented: $showingModal) {
                 UpdateProfileView(showingModal: self.$showingModal)
@@ -87,18 +94,19 @@ struct StudentInfoView: View {
             }
             .padding(.top, 24)
         }
-        .padding(.all, 16)
+//        .padding(.all, 16)
         
     }
+    
 }
 
 let sampleStudent = StudentInfo("Saumil Shah","sshah1612@sdsu.edu", "823191571", [someCourse])
 
 struct StudentInfoView_Previews: PreviewProvider {
-    
     static var previews: some View {
-        
         StudentInfoView()
             .environmentObject(UserData())
+            .previewDevice(PreviewDevice(rawValue: "iPhone XS"))
+            .previewDisplayName("iPhone XS")
     }
 }

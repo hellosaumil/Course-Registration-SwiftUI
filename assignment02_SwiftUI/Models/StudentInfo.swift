@@ -10,9 +10,9 @@ import Foundation
 
 // A student has a name, email address and a red id. A course has number (CS 646), a title (iPad/iPhone Application Development), a room number (GC 1504) and a start time (7:00 pm).
 
-struct StudentInfo: Hashable, Codable, Identifiable {
+struct StudentInfo: Hashable, Codable {
     
-    var id: String
+//    var id: String
     var studentName:String
     var studentEmail:String
     var studentRedID:String
@@ -23,7 +23,7 @@ struct StudentInfo: Hashable, Codable, Identifiable {
         
         if studentEmail.contains("@") && studentRedID.count == 9 {
             
-            self.id = studentRedID
+//            self.id = studentRedID
             
             self.studentName = studentName
             self.studentEmail = studentEmail
@@ -41,6 +41,11 @@ struct StudentInfo: Hashable, Codable, Identifiable {
         self.init(student.studentName, student.studentEmail, student.studentRedID, student.courses)
     }
     
+    func getStudentInfo() -> StudentInfoStructure {
+        
+        return StudentInfoStructure(self.studentName, self.studentEmail, self.studentRedID, self.courses)
+    }
+    
 }
 
 struct StudentInfoStructure: StudentInfoProtocol, Hashable, Codable {
@@ -51,12 +56,13 @@ struct StudentInfoStructure: StudentInfoProtocol, Hashable, Codable {
     var courses: [CourseInfo]
     
     init(_ studentName:String, _ studentEmail:String, _ studentRedID:String, _ courses:[CourseInfo]) {
-        
+
         self.studentName = studentName
         self.studentEmail = studentEmail
         self.studentRedID = studentRedID
         self.courses = courses
     }
+    
 }
 
 protocol StudentInfoProtocol {
