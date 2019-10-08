@@ -20,6 +20,10 @@ struct UpdateProfileView: View {
     @Binding var showingModal:Bool
     
     @State private var showingAlert:Bool = false
+    @State private var showingDataSaveAlert:Bool = false
+    @State private var showingDataSaveAlertMessage:String = ""
+    
+    
     @State private var studentNameField:String = ""
     @State private var studentEmailField:String = ""
     @State private var studentRedIDField:String = ""
@@ -50,6 +54,17 @@ struct UpdateProfileView: View {
             ))
     }
     
+    private func dataSaveAlert(errMsg:String) -> Alert {
+        
+        return Alert(
+            title: Text("Cant' Save Data"),
+            message: Text(errMsg),
+            dismissButton: .cancel(
+                Text("Dismiss"),
+                action: {self.showingDataSaveAlert = false}
+            ))
+    }
+    
     private func userInput(keyboard keyboardDataType: UIKeyboardType = .default, _ txt_msg:String="Enter your text message:", _ tf_msg:String="Placeholder Message", _ tfTextBinding:Binding<String>) -> some View {
         
         HStack {
@@ -72,7 +87,7 @@ struct UpdateProfileView: View {
         
         self.studentEmailField = self.userData.currentStudent.studentEmail == "@" ? "" : userData.currentStudent.studentEmail
         
-        self.studentRedIDField = self.userData.currentStudent.studentRedID == "---------" ? "" : self.userData.currentStudent.studentRedID
+        self.studentRedIDField = self.userData.currentStudent.studentRedID == 0 ? "" : String(format:"%09d", self.userData.currentStudent.studentRedID)
     }
     
     private func displayMenu() -> some View {
@@ -98,27 +113,23 @@ struct UpdateProfileView: View {
                 VStack {
                     Text("Student Profile")
                         .bold()
-                        .font(.system(.title, design: .monospaced))
+                        .font(.system(.largeTitle, design: .default))
                     
                     self.displayMenu()
                     
                     Button(action: {
                         print("Update Profile Tapped!")
                         
-                        if let studentInfoChanged = StudentInfo(self.studentNameField, self.studentEmailField, self.studentRedIDField, self.userData.currentStudent.courses) {
-                            
-                            self.userData.currentStudent = studentInfoChanged
-                            
+                        if self.userData.currentStudent.updateBasicStudentInfo(self.studentNameField, self.studentEmailField, Int(self.studentRedIDField) ?? 0) {
+
+                            // MARK: Store Updated Student Info
+                            let UpdatedStudentInfo = self.userData.currentStudent
                             do {
-                                
-                                let UpdatedStudentInfo = self.userData.currentStudent.getStudentInfo()
-                                
-                                try save("studentData.json", data: UpdatedStudentInfo)
-                                print("Data Saved.\n")
-                                
+                                try saveStudentData(UpdatedStudentInfo: UpdatedStudentInfo)
+                                self.showingModal = false
                             } catch {
-                                
-                                print("\tCan't Save Data...\(error)\n")
+                                self.showingDataSaveAlertMessage = error.localizedDescription
+                                self.showingDataSaveAlert.toggle()
                             }
                             
                             self.showingModal = false
@@ -148,7 +159,9 @@ struct UpdateProfileView: View {
             .offset(y: 40)
             Spacer()
             
-        }.onTapGesture {
+        }
+//        .alert(isPresented: self.$showingDataSaveAlert, content: { self.dataSaveAlert(errMsg: self.showingDataSaveAlertMessage) })
+        .onTapGesture {
             self.endEditing(true)
         }
     }

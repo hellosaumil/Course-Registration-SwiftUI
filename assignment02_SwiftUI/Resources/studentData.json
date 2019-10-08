@@ -1,7 +1,8 @@
 {
-    "studentName": "Saumil Shah",
-    "studentEmail": "sshah1612@sdsu.edu",
-    "studentRedID": "823191571",
+    "studentName": "Bruce Wayne",
+    "studentEmail": "bwayne@waynecorp.com",
+    "studentRedID": 823191571,
     
-    "courses": []
+    "courses": [
+    ]
 }

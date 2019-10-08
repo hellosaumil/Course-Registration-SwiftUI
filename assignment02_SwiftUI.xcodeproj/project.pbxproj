@@ -72,8 +72,8 @@
 			children = (
 				6BF269822341ECA000AED67D /* StudentInfo.swift */,
 				6B95B2732347543F00EF162C /* CourseInfo.swift */,
-				6BF269802341EC3B00AED67D /* Data.swift */,
 				6BF269742341EA7100AED67D /* UserData.swift */,
+				6BF269802341EC3B00AED67D /* Data.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";

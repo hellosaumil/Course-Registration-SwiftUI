@@ -33,7 +33,7 @@ struct AvailableCoursesView: View {
             self.userData.currentStudent.courses.append(courseToEnroll)
             
         } else {
-            print("\tStudent already enrolled in \(courseToEnroll.courseNumber)...")
+//            print("\tStudent already enrolled in \(courseToEnroll.courseNumber)...")
         }
         
         return Image(systemName: "checkmark.circle.fill")
@@ -52,7 +52,7 @@ struct AvailableCoursesView: View {
             self.userData.currentStudent.courses.remove(at: courseIndex!)
             
         } else {
-            print("\tStudent wasn't enrolled in \(courseToEnroll.courseNumber)...")
+//            print("\tStudent wasn't enrolled in \(courseToEnroll.courseNumber)...")
         }
         
         return Image(systemName: "checkmark.circle")
@@ -63,7 +63,7 @@ struct AvailableCoursesView: View {
     
     var body: some View {
         
-        NavigationView {
+        Group {
             
             // MARK: Check of No Available Courses
             if userData.availableCourses.count == 0 {
@@ -104,7 +104,18 @@ struct AvailableCoursesView: View {
                 })
             }
         }
-        .navigationBarTitle(Text(self.navTitle.rawValue))
+        .navigationBarTitle(Text(self.navTitle.rawValue), displayMode: .inline)
+        .onDisappear(perform:{
+            // MARK: Store Updated Student Courses
+            let UpdatedStudentInfo = self.userData.currentStudent
+            do {
+                try saveStudentData(UpdatedStudentInfo: UpdatedStudentInfo)
+            } catch {
+                print("\nError while saving updated Courses\(error.localizedDescription)...\n")
+                //                self.showingDataSaveAlertMessage = error.localizedDescription
+                //                self.showingDataSaveAlert.toggle()
+            }
+        }) 
     }
 }
 

@@ -13,69 +13,57 @@ import SwiftUI
 import Foundation
 
 
-let courseInfoStructureData: [CourseInfoStructure] = loadCourseListData("courseList.json")
-let courseListData: [CourseInfo] = loadCourseList(courseInfoStructureData)
-
-let someStudent:StudentInfo = StudentInfo("", "@", "---------", [])!
-let StudentInfoStructureData: StudentInfoStructure = loadStudentData("studentData.json")
-let studentData: StudentInfo = StudentInfo(fromStudent: StudentInfoStructureData) ?? someStudent
-
+let courseListData: [CourseInfo] = loadCourseListData("courseList", "json")
+let studentData: StudentInfo = loadStudentData("studentData", "json")
 
 let courseSelection: Dictionary<CourseInfo, Bool> = Dictionary(uniqueKeysWithValues: courseListData.map({ ($0, false) }))
 
 
-
-// MARK: User Defined Functino
+// MARK: User Defined Functinos
 //
 // User Defined Functions for Loading Student and Course Data
 //
 
-func loadStudentData(_ filename: String) -> StudentInfoStructure {
+func loadStudentData(_ filename: String, _ ext:String? = nil) -> StudentInfo {
     
-    let loadedStudentData: StudentInfoStructure
+    let loadedStudentData: StudentInfo
     
     do {
-        loadedStudentData = try load(filename)
+        loadedStudentData = try load(filename, ext)
     } catch {
         
-        let sampleStudentInfoStruct = StudentInfoStructure("", "@", "---------", [])
-        loadedStudentData = sampleStudentInfoStruct
+        let noRecordStudent:StudentInfo = StudentInfo("", "@", 000_000_000, [])!
+        loadedStudentData = noRecordStudent
     }
     
     return loadedStudentData
 }
 
 
-func loadCourseListData(_ filename: String) -> [CourseInfoStructure] {
+func loadCourseListData(_ filename: String, _ ext:String? = nil) -> [CourseInfo] {
     
-    let loadedCourseListData: [CourseInfoStructure]
+    let loadedCourseListData: [CourseInfo]
     
     do {
-        loadedCourseListData = try load(filename)
+        loadedCourseListData = try load(filename, ext)
     } catch {
         
-        let sampleCourseData = [CourseInfoStructure]()
+        let sampleCourseData = [CourseInfo]()
         loadedCourseListData = sampleCourseData
     }
     
     return loadedCourseListData
 }
 
-func loadCourseList(_ courses: [CourseInfoStructure]) -> [CourseInfo] {
+enum DataLoadSaveError: Error{
     
-    var coursesList = [CourseInfo]()
-    
-    for courseInfoStruct in courses {
-        coursesList.append(CourseInfo(fromCourse: courseInfoStruct))
-    }
-    
-    return coursesList
-}
-
-enum LoaderError: Error {
     case fileNotFound, coudlNotLoadFromBundle, coudlNotSaveToBundle, coudlNotParse
 }
 
+func getDocumentsDirectory() -> URL {
+    let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+    return paths[0]
+}
 
 //
 // Original Code of the load function has been modified.
@@ -84,79 +72,89 @@ enum LoaderError: Error {
 // https://developer.apple.com/tutorials/swiftui/creating-and-combining-views
 //
 //
-func load<T: Decodable>(_ filename: String, as type: T.Type = T.self) throws -> T {
+func load<T: Decodable>(_ filename: String, _ fileExtension:String? = nil, as type: T.Type = T.self) throws -> T {
     let data: Data
     let loadedData: T
     
-    guard let file = Bundle.main.url(forResource: filename, withExtension: nil)
+    guard let file = Bundle.main.url(forResource: filename, withExtension: fileExtension)
         else {
-            print("Couldn't find \(filename) in main bundle.")
-            throw LoaderError.fileNotFound
+            print("Load: Couldn't find \(filename) in main bundle.")
+            throw DataLoadSaveError.fileNotFound
     }
     
     do {
         data = try Data(contentsOf: file)
     } catch {
-        print("Couldn't load \(filename) from main bundle:\n\(error)")
-        throw LoaderError.coudlNotLoadFromBundle
+        print("Load: Couldn't load \(filename) from main bundle:\n\(error)")
+        throw DataLoadSaveError.coudlNotLoadFromBundle
     }
     
     do {
         let decoder = JSONDecoder()
         loadedData = try decoder.decode(T.self, from: data)
     } catch {
-        print("Couldn't parse \(filename) as \(T.self):\n\(error)")
-        throw LoaderError.coudlNotParse
+        print("Load: Couldn't parse \(filename) as \(T.self):\n\(error)")
+        throw DataLoadSaveError.coudlNotParse
     }
     
     return loadedData
 }
 
 
-func getDocumentsDirectory() -> URL {
-    let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-    return paths[0]
-}
-
-func save<T: Encodable>(_ filename: String, data: T, as type: T.Type = T.self) throws {
+func save<T: Encodable>(_ filename: String, data: T, _ fileExtension:String? = nil, as type: T.Type = T.self) throws {
     
-    guard let file = Bundle.main.url(forResource: filename, withExtension: nil)
+    let jsonData: Data
+    let jsonString:String = ""
+    
+    guard let file = Bundle.main.url(forResource: filename, withExtension: fileExtension)
         else {
-            print("Couldn't find \(filename) in main bundle.")
-            throw LoaderError.fileNotFound
+            print("Save: Couldn't find \(filename) in main bundle.")
+            throw DataLoadSaveError.fileNotFound
     }
-    
-//    let file = getDocumentsDirectory().appendingPathComponent(filename)
     
     do {
         let encoder = JSONEncoder()
         encoder.outputFormatting = .prettyPrinted
         
-        let jsonData = try encoder.encode(data)
-        
-        if let jsonString = String(data: jsonData, encoding: .utf8) {
-            print(jsonString)
-            
-            print("Attemting to Save at: \(file)...")
-            
-            do {
-                try jsonString.write(to: file, atomically: false, encoding: .utf8)
-                print("\tFile Saved at: \(file)")
-                
-            } catch {
-            
-                print("Couldn't save \(filename) to main bundle:\n\(error)")
-                throw LoaderError.coudlNotSaveToBundle
-            }
-            
-        } else {
-            print("\tCouldn't convert jsonData to jsonString :\n")
-            throw LoaderError.coudlNotSaveToBundle
-        }
+        jsonData = try encoder.encode(data)
         
     } catch {
-        print("Couldn't parse \(filename) as \(T.self):\n\(error)")
-        throw LoaderError.coudlNotParse
+        print("Save: Couldn't parse \(filename) as \(T.self):\n\(error)")
+        throw DataLoadSaveError.coudlNotParse
+    }
+    
+    
+    if let jsonString = String(data: jsonData, encoding: .utf8) {
+        print("Save: jsonString: \n\(jsonString)")
+        print("Attemting to Save at: \(file)...")
+        
+    } else {
+        print("\tSave: Couldn't convert jsonData to jsonString :\n")
+        throw DataLoadSaveError.coudlNotParse
+    }
+    
+    
+    do {
+        try jsonString.write(to: file, atomically: true, encoding: .utf8)
+        print("\tFile Saved at: \(file)")
+        
+    } catch {
+        
+        print("Save: Couldn't save \(filename) to main bundle:\n\(error)")
+        throw DataLoadSaveError.coudlNotSaveToBundle
+    }
+    
+}
+
+func saveStudentData(UpdatedStudentInfo:StudentInfo) throws {
+    
+    do {
+        try save("studentData.json", data: UpdatedStudentInfo)
+        print("Data Saved.\n")
+        
+    } catch {
+        print("\tCan't Save Student Data...\(error)\n")
+        throw error
     }
     
 }

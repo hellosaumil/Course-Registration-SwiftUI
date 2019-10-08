@@ -67,8 +67,6 @@ struct CourseInfoView: View {
                 Text("Location: \(self.courseInformation.courseRoomNumber)")
                 Text("Time: \(self.courseInformation.courseStartTime)")
         }
-        //        .frame(alignment: .leading)
-        
     }
 }
 

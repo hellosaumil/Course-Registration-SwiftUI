@@ -10,73 +10,62 @@ import Foundation
 
 // A student has a name, email address and a red id. A course has number (CS 646), a title (iPad/iPhone Application Development), a room number (GC 1504) and a start time (7:00 pm).
 
-struct StudentInfo: Hashable, Codable {
+
+fileprivate func validateStudentValues(_ studentName:String, _ studentEmail:String, _ studentRedID:Int) -> Bool {
     
-//    var id: String
-    var studentName:String
-    var studentEmail:String
-    var studentRedID:String
-    
-    var courses = [CourseInfo]()
-    
-    init?(_ studentName:String, _ studentEmail:String, _ studentRedID:String, _ courses:[CourseInfo]) {
-        
-        if studentEmail.contains("@") && studentRedID.count == 9 {
-            
-//            self.id = studentRedID
-            
-            self.studentName = studentName
-            self.studentEmail = studentEmail
-            self.studentRedID = studentRedID
-            
-            self.courses = courses
-            
-        } else {
-            
-            return nil
-        }
+    guard studentEmail.contains("@") && (String(studentRedID).count == 9 || studentRedID == 0) else {
+        return false
     }
-    
-    init?(fromStudent student:StudentInfoStructure) {
-        self.init(student.studentName, student.studentEmail, student.studentRedID, student.courses)
-    }
-    
-    func getStudentInfo() -> StudentInfoStructure {
-        
-        return StudentInfoStructure(self.studentName, self.studentEmail, self.studentRedID, self.courses)
-    }
-    
+    print("Valid Student")
+    return true
 }
 
-struct StudentInfoStructure: StudentInfoProtocol, Hashable, Codable {
+struct StudentInfo: StudentInfoProtocol, Hashable, Codable {
     
-    var studentName: String
-    var studentEmail: String
-    var studentRedID: String
-    var courses: [CourseInfo]
+    //    var id: String
+    var studentName:String
+    var studentEmail:String
+    var studentRedID:Int
+    var courses = [CourseInfo]()
     
-    init(_ studentName:String, _ studentEmail:String, _ studentRedID:String, _ courses:[CourseInfo]) {
+    
+    init?(_ studentName:String, _ studentEmail:String, _ studentRedID:Int, _ courses:[CourseInfo]) {
+        
+        guard validateStudentValues(studentName, studentEmail, studentRedID) else {
+            print("Invalid Values : \(studentName), \(studentEmail), \(studentRedID)")
+            return nil
+        }
 
+        //        self.id = studentRedID
         self.studentName = studentName
         self.studentEmail = studentEmail
         self.studentRedID = studentRedID
         self.courses = courses
     }
     
+    
+     mutating func updateBasicStudentInfo(_ studentName:String, _ studentEmail:String, _ studentRedID:Int) -> Bool {
+
+        guard validateStudentValues(studentName, studentEmail, studentRedID) else {
+            return false
+        }
+
+        //        self.id = studentRedID
+        self.studentName = studentName
+        self.studentEmail = studentEmail
+        self.studentRedID = studentRedID
+        
+        return true
+    }
+    
 }
+
 
 protocol StudentInfoProtocol {
     
     var studentName: String { get set }
     var studentEmail: String { get set }
-    var studentRedID: String { get set }
+    var studentRedID: Int { get set }
     var courses: [CourseInfo] { get set }
-    
-    //    init(_ courseNumber:String, _ courseRoomNumber:String, _ courseStartTime:String) {
-    //
-    //        self.courseNumber = courseNumber
-    //        self.courseRoomNumber = courseRoomNumber
-    //        self.courseStartTime = courseStartTime
-    //    }
     
 }

@@ -36,14 +36,26 @@ final class UserData: ObservableObject {
 
 // TODO:
 //
-// - Data Validation
-//      - Red ID should only be 9 digits
-//      - Email should contain @
-//      - Check if Course Times Clash
+// - Save Data onDisappear of Course Selction in AvailableCoursesView
 //
-// - Data Types should be other String
-//      - Change Red ID to Int (Changing to Int will cause clash in techtfield binding)
+// - Data Validation
+//      - Red ID should only be 9 digits (􀆅)
+//      - Email should contain @ (􀆅)
+//      - Update Profile should display corresponding error message (--)
+//      - Check if Course Times Clash (optional)
+//
+// - Create Project-wide Contraints
+//      - Create reusable validaton values for different properties
+//      - To avoid re-writing @ or 9-digit
+//
+// - Data Types should be other than String
+//      - Change Red ID to Int (􀆅)
 //      - Change Course Start Time to Date & Time
+//      - Write getters to provide formatted data (--)
 //
 // - File Persistance (Write Data to File)
+//      - Not Working (Saves file in Simulator, but not on Physical Device)
 //
+// - OnDisappear NOT WORKING
+//
+// - Modify enroll / unenroll functions to compare courses or add == Equatable
