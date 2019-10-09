@@ -21,10 +21,6 @@ struct EnrolledCoursesView: View {
             VStack {
                 
                 // MARK: Check if No Valid Student Info Present
-//                if self.userData.currentStudent.studentName == "" &&
-//                    self.userData.currentStudent.studentEmail == "@" &&
-//                    self.userData.currentStudent.studentRedID == 0 {
-                
                 if !validateStudentValues(self.userData.currentStudent.studentName, self.userData.currentStudent.studentEmail, self.userData.currentStudent.studentRedID) {
                     
                     NewUserLandingView(showingModal: self.$showingModal)
@@ -142,14 +138,14 @@ struct ContextMenuButton: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            //            Text("3D Tap for More Info")
-            //                .font(.system(.callout, design: .rounded))
-            //                .foregroundColor(Color.blue)
-            //                .contextMenu {
-            Text("Name: \(self.userDataObj.currentStudent.studentName)")
-            Text(String(format:"Red ID: %09d", self.userDataObj.currentStudent.studentRedID))
-            Text("Email: \(self.userDataObj.currentStudent.studentEmail)")
-            //            }
+            Text("3D Tap for More Info")
+                .font(.system(.callout, design: .rounded))
+                .foregroundColor(Color.blue)
+                .contextMenu {
+                    Text("Name: \(self.userDataObj.currentStudent.studentName)")
+                    Text(String(format:"Red ID: %09d", self.userDataObj.currentStudent.studentRedID))
+                    Text("Email: \(self.userDataObj.currentStudent.studentEmail)")
+            }
         }.frame(alignment: .leading)
     }
 }

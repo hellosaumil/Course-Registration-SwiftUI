@@ -108,8 +108,8 @@
 			children = (
 				6BF2693B2341D35A00AED67D /* AppDelegate.swift */,
 				6BF2693D2341D35A00AED67D /* SceneDelegate.swift */,
-				6BF269412341D35C00AED67D /* Assets.xcassets */,
 				6BF269462341D35C00AED67D /* LaunchScreen.storyboard */,
+				6BF269412341D35C00AED67D /* Assets.xcassets */,
 				6BF2696F2341D65F00AED67D /* EnrolledCoursesView.swift */,
 				6B95B27723475CB000EF162C /* AvailableCoursesView.swift */,
 				6B7616B2234965FA00D05FEB /* Supporting Views */,
