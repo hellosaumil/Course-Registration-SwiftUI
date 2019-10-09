@@ -1,6 +1,5 @@
 struct CourseInfo: Hashable, Codable, CourseInfoProtocol {
     
-//    let id: String
     let courseTitle:String
     let courseNumber: String
     let courseRoomNumber: String
@@ -8,7 +7,6 @@ struct CourseInfo: Hashable, Codable, CourseInfoProtocol {
     
     
     init(_ courseTitle:String, _ courseNumber:String, _ courseRoomNumber:String, _ courseStartTime:String) {
-//        self.id = courseNumber
         
         self.courseTitle = courseTitle
         self.courseNumber = courseNumber

@@ -12,6 +12,7 @@ import UIKit
 import SwiftUI
 import Foundation
 
+let noRecordStudent:StudentInfo = StudentInfo("", "@", 000_000_000, [])!
 
 let studentDataFileName:String = "studentData.json"
 let courseListDataFileName:String = "courseList.json"
@@ -182,7 +183,6 @@ func loadStudentData(_ filename: String, _ ext:String? = nil) -> StudentInfo {
     do {
         loadedStudentData = try loadFromAppDirectory(filename)
     } catch {
-        let noRecordStudent:StudentInfo = StudentInfo("", "@", 000_000_000, [])!
         loadedStudentData = noRecordStudent
     }
     

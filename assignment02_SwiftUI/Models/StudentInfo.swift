@@ -20,9 +20,8 @@ func validateStudentValues(_ studentName:String, _ studentEmail:String, _ studen
     return true
 }
 
-struct StudentInfo: StudentInfoProtocol, Hashable, Codable {
+struct StudentInfo: StudentInfoProtocol, Hashable, Codable, Equatable {
     
-    //    var id: String
     var studentName:String
     var studentEmail:String
     var studentRedID:Int
@@ -36,7 +35,6 @@ struct StudentInfo: StudentInfoProtocol, Hashable, Codable {
             return nil
         }
 
-        //        self.id = studentRedID
         self.studentName = studentName
         self.studentEmail = studentEmail
         self.studentRedID = studentRedID
@@ -50,7 +48,6 @@ struct StudentInfo: StudentInfoProtocol, Hashable, Codable {
             return false
         }
 
-        //        self.id = studentRedID
         self.studentName = studentName
         self.studentEmail = studentEmail
         self.studentRedID = studentRedID
