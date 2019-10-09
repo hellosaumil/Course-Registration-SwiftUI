@@ -117,19 +117,18 @@ struct UpdateProfileView: View {
                     
                     self.displayMenu()
                     
+                    Spacer()
+                    
                     Button(action: {
                         print("Update Profile Tapped!")
                         
-                        if self.userData.currentStudent.updateBasicStudentInfo(self.studentNameField, self.studentEmailField, Int(self.studentRedIDField) ?? 0) {
+                        if self.userData.currentStudent.updateBasicStudentInfo(self.studentNameField, self.studentEmailField, Int(self.studentRedIDField) ?? -1) {
+                            
+                            if !storeUpdatedUser(self.userData) {
 
-                            // MARK: Store Updated Student Info
-                            let UpdatedStudentInfo = self.userData.currentStudent
-                            do {
-                                try saveStudentData(UpdatedStudentInfo: UpdatedStudentInfo)
-                                self.showingModal = false
-                            } catch {
-                                self.showingDataSaveAlertMessage = error.localizedDescription
                                 self.showingDataSaveAlert.toggle()
+                            } else {
+                                self.showingModal = false
                             }
                             
                             self.showingModal = false
@@ -142,15 +141,14 @@ struct UpdateProfileView: View {
                     }) {
                         Text("Update")
                             .fontWeight(.semibold)
-                            .font(.system(size: 20))
+                            .font(.system(.body))
                             
                             .padding()
-                            .frame(maxWidth: 300)
+                            .frame(width: UIScreen.main.bounds.width * 0.84)
                             .foregroundColor(.white)
                             .background(Color.blue)
                             .cornerRadius(14)
                     }
-                        
                     .offset(y: 16)
                 }
             }

@@ -78,14 +78,10 @@ struct StudentInfoView: View {
                         .lineLimit(1)
                         .frame(maxWidth: .infinity,  alignment: .leading)
                     
-                    
                 } else {
                     Text("Email: No Record")
                         .font(.system(.body, design: .rounded))
                 }
-                
-                //                    Spacer()
-                
             }
             
         }

@@ -13,16 +13,45 @@ struct AvailableCoursesView: View {
     @EnvironmentObject var userData: UserData
     @State var navTitle: navTitleType = .NoCourses
     
+    var body: some View {
+        
+        Group {
+            
+            // MARK: Display a List of Available Courses
+            List{
+                ForEach(self.userData.availableCourses, id: \.self) { course in
+                    
+                    Button(action: {self.userData.isCourseSelected[course]?.toggle()}) {
+
+                        HStack(alignment: .center) {
+
+                            if (self.userData.isCourseSelected[course] ?? false) {
+                                self.enrollStudent(courseToEnroll: course)
+                            } else {
+                                self.unenrollStudent(unenrollFromCourse: course)
+                            }
+                            Spacer().frame(width: 24)
+
+                            CourseInfoView(courseInformation: course)
+
+                        }
+                        .padding(8)
+                    }
+                }
+            }
+            .onAppear(perform: {self.updateNavTitle()})
+        }
+        .navigationBarTitle(Text(self.navTitle.rawValue), displayMode: .inline)
+        .onDisappear(perform:{ let _ = storeUpdatedUser(self.userData) })
+    }
     
-    /// Enum for Possible Navigation Titles based on Number of Courses
-    /// Conforms to String
-    ///
-    /// - Cases:
-    ///   - NoCourses: "No Courses"
-    ///   - AvailableCourses: "Available Courses"
-    ///
-    enum navTitleType:String {
-        case NoCourses = "No Courses", AvailableCourses = "Available Courses"
+    private func updateNavTitle() {
+        
+        if self.userData.availableCourses.count == 0 {
+            self.navTitle = navTitleType.NoCourses
+        } else {
+            self.navTitle = navTitleType.AvailableCourses
+        }
     }
     
     private func enrollStudent(courseToEnroll: CourseInfo) -> some View {
@@ -33,7 +62,7 @@ struct AvailableCoursesView: View {
             self.userData.currentStudent.courses.append(courseToEnroll)
             
         } else {
-//            print("\tStudent already enrolled in \(courseToEnroll.courseNumber)...")
+            //            print("\tStudent already enrolled in \(courseToEnroll.courseNumber)...")
         }
         
         return Image(systemName: "checkmark.circle.fill")
@@ -42,17 +71,17 @@ struct AvailableCoursesView: View {
             .animation(.easeInOut)
     }
     
-    private func unenrollStudent(courseToEnroll: CourseInfo) -> some View {
+    private func unenrollStudent(unenrollFromCourse: CourseInfo) -> some View {
         
-        if self.userData.currentStudent.courses.contains(courseToEnroll) {
-            print("Unenrolled from \(courseToEnroll.courseNumber)")
+        if self.userData.currentStudent.courses.contains(unenrollFromCourse) {
+            print("Unenrolled from \(unenrollFromCourse.courseNumber)")
             
-            let courseIndex = self.userData.currentStudent.courses.firstIndex{ $0.courseNumber == courseToEnroll.courseNumber }
+            let courseIndex = self.userData.currentStudent.courses.firstIndex{ $0.courseNumber == unenrollFromCourse.courseNumber }
             
             self.userData.currentStudent.courses.remove(at: courseIndex!)
             
         } else {
-//            print("\tStudent wasn't enrolled in \(courseToEnroll.courseNumber)...")
+//                        print("\tStudent wasn't enrolled in \(courseToEnroll.courseNumber)...")
         }
         
         return Image(systemName: "checkmark.circle")
@@ -61,62 +90,6 @@ struct AvailableCoursesView: View {
             .animation(.easeInOut)
     }
     
-    var body: some View {
-        
-        Group {
-            
-            // MARK: Check of No Available Courses
-            if userData.availableCourses.count == 0 {
-                
-                ScrollView {
-                    Text("No Courses Available")
-                        .font(.system(.body, design: .monospaced))
-                        .offset(y: UIScreen.main.bounds.height / 3)
-                }.onAppear(perform: {
-                    self.navTitle = navTitleType.NoCourses
-                })
-                
-            } else {
-                
-                // MARK: Display a List of Available Courses
-                List{
-                    ForEach(userData.availableCourses, id: \.self) { course in
-                        Button(action: {self.userData.isCourseSelected[course]?.toggle()}) {
-                            
-                            HStack(alignment: .center) {
-                                
-                                if self.userData.isCourseSelected[course]! {
-                                    self.enrollStudent(courseToEnroll: course)
-                                } else {
-                                    self.unenrollStudent(courseToEnroll: course)
-                                }
-                                
-                                Spacer().frame(width: 24)
-                                
-                                CourseInfoView(courseInformation: course)
-                                
-                            }
-                            .padding(8)
-                        }
-                    }
-                }.onAppear(perform: {
-                    self.navTitle = navTitleType.AvailableCourses
-                })
-            }
-        }
-        .navigationBarTitle(Text(self.navTitle.rawValue), displayMode: .inline)
-        .onDisappear(perform:{
-            // MARK: Store Updated Student Courses
-            let UpdatedStudentInfo = self.userData.currentStudent
-            do {
-                try saveStudentData(UpdatedStudentInfo: UpdatedStudentInfo)
-            } catch {
-                print("\nError while saving updated Courses\(error.localizedDescription)...\n")
-                //                self.showingDataSaveAlertMessage = error.localizedDescription
-                //                self.showingDataSaveAlert.toggle()
-            }
-        }) 
-    }
 }
 
 struct AvailableCoursesView_Previews: PreviewProvider {
@@ -128,4 +101,16 @@ struct AvailableCoursesView_Previews: PreviewProvider {
             .previewDevice(PreviewDevice(rawValue: "iPhone XS"))
             .previewDisplayName("iPhone XS")
     }
+}
+
+
+/// Enum for Possible Navigation Titles based on Number of Courses
+/// Conforms to String
+///
+/// - Cases:
+///   - NoCourses: "No Courses"
+///   - AvailableCourses: "Available Courses"
+///
+enum navTitleType:String {
+    case NoCourses = "No Courses", AvailableCourses = "Available Courses"
 }

@@ -20,8 +20,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
 
         // Use a UIHostingController as window root view controller
-        
-        
+
         
         if let windowScene = scene as? UIWindowScene {
             let window = UIWindow(windowScene: windowScene)
@@ -61,12 +60,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // to restore the scene back to its current state.
         
         print("\nsceneDidEnterBackground \t*****\n")
-        
-        do {
-            try saveStudentData(UpdatedStudentInfo: userData.currentStudent)
-        } catch {
-            print("\nError while saving in sceneDidEnterBackground. : \(error)\n")
-        }
+//
+//        do {
+//            try saveStudentData(UpdatedStudentInfo: userData.currentStudent)
+//        } catch {
+//            print("\nError while saving in sceneDidEnterBackground. : \(error)\n")
+//        }
     }
 
 

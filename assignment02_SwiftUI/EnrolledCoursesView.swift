@@ -23,50 +23,30 @@ struct EnrolledCoursesView: View {
                 // MARK: Check if No Valid Student Info Present
                 if self.userData.currentStudent.studentName == "" &&
                     self.userData.currentStudent.studentEmail == "@" &&
-                    self.userData.currentStudent.studentRedID == 0
-                {
-                    NewUserLandingView()
-                        .environmentObject(self.userData)
-                }
+                    self.userData.currentStudent.studentRedID == 0 {
                     
-                else {
+                    NewUserLandingView(showingModal: self.$showingModal)
+                    
+                } else {
                     
                     // MARK: Display Student Info
                     VStack {
-                        StudentInfoView()
-                            .environmentObject(self.userData)
-                            .padding()
-                        
-                        VStack(alignment: .leading) {
-                            Text("3D Tap for More Info")
-                                .font(.system(.callout, design: .rounded))
-                                .foregroundColor(Color.blue)
-                                //                            .frame(height: 40)
-                                
-                                .contextMenu {
-                                    Text("Name: \(self.userData.currentStudent.studentName)")
-                                    Text(String(format:"Red ID: %09d", self.userData.currentStudent.studentRedID))
-                                    Text("Email: \(self.userData.currentStudent.studentEmail)")
-                            }
-                        }.frame(alignment: .leading)
+                        StudentInfoView().padding()
                         
                         Divider()
                         
                         // MARK: Check if No Enrolled Courses
                         if self.userData.currentStudent.courses.count == 0 {
-                            Spacer()
                             
+                            Spacer()
                             ShowFooter(headlineMsg: "Click Here to Add Courses", subHeadilneMsg: "No Courses Registered")
-                                .environmentObject(self.userData)
                             
                         } else {
                             
                             // MARK: Display List of Enrolled Courses
-                            ShowCourses()
-                                .environmentObject(self.userData)
-                            
+                            ShowEnrolledCourses()
                             ShowFooter(headlineMsg: "Update Courses", subHeadilneMsg: "3D Tap on Course for More Info")
-                                .environmentObject(self.userData)
+                            
                         }
                     }
                     .padding(4)
@@ -91,7 +71,6 @@ struct EnrolledCoursesView_Previews: PreviewProvider {
 
 struct ShowFooter: View {
     
-    @EnvironmentObject var userDataObj: UserData
     @State var headlineMsg:String
     @State var subHeadilneMsg:String
     
@@ -99,10 +78,7 @@ struct ShowFooter: View {
         VStack {
             Divider().padding(.bottom, 24)
             
-            NavigationLink(destination:
-                AvailableCoursesView()
-                    .environmentObject(self.userDataObj)
-            ) {
+            NavigationLink(destination: AvailableCoursesView()) {
                 Text(headlineMsg)
                     .font(.headline)
             }
@@ -114,7 +90,7 @@ struct ShowFooter: View {
     }
 }
 
-struct ShowCourses: View {
+struct ShowEnrolledCourses: View {
     
     @EnvironmentObject var userDataObj: UserData
     
@@ -130,11 +106,11 @@ struct ShowCourses: View {
 struct NewUserLandingView: View {
     
     @EnvironmentObject var userDataObj: UserData
-    @State var showingModal = false
+    @Binding var showingModal:Bool
     
     var body: some View {
         
-        Group {
+        VStack {
             Text("No Student Record Found")
                 .font(.system(.body, design: .monospaced))
                 .padding(.top, 16)
@@ -153,6 +129,25 @@ struct NewUserLandingView: View {
                 UpdateProfileView(showingModal: self.$showingModal)
                     .environmentObject(self.userDataObj)
             }
+            
         }
+    }
+}
+
+struct ContextMenuButton: View {
+    
+    @EnvironmentObject var userDataObj: UserData
+    
+    var body: some View {
+        VStack(alignment: .leading) {
+            //            Text("3D Tap for More Info")
+            //                .font(.system(.callout, design: .rounded))
+            //                .foregroundColor(Color.blue)
+            //                .contextMenu {
+            Text("Name: \(self.userDataObj.currentStudent.studentName)")
+            Text(String(format:"Red ID: %09d", self.userDataObj.currentStudent.studentRedID))
+            Text("Email: \(self.userDataObj.currentStudent.studentEmail)")
+            //            }
+        }.frame(alignment: .leading)
     }
 }
