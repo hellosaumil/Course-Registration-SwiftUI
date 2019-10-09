@@ -13,7 +13,7 @@ import Foundation
 
 func validateStudentValues(_ studentName:String, _ studentEmail:String, _ studentRedID:Int) -> Bool {
     
-    guard studentEmail.contains("@") && (String(studentRedID).count == 9 || studentRedID == 0) else {
+    guard (studentEmail.contains("@") && String(studentRedID).count == 9) || (studentName == "" && studentEmail == "@" && studentRedID == 000_000_000 ) else {
         return false
     }
     print("Valid Student")

@@ -67,7 +67,7 @@ struct AvailableCoursesView: View {
         
         return Image(systemName: "checkmark.circle.fill")
             .foregroundColor(Color.yellow)
-            .scaleEffect(1.8)
+            .font(.title)
             .animation(.easeInOut)
     }
     
@@ -85,8 +85,8 @@ struct AvailableCoursesView: View {
         }
         
         return Image(systemName: "checkmark.circle")
-            .foregroundColor(Color.gray.opacity(0.5))
-            .scaleEffect(1.4)
+            .foregroundColor(Color.gray.opacity(0.4))
+            .font(.title)
             .animation(.easeInOut)
     }
     
