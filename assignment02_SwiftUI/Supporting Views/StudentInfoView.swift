@@ -58,7 +58,7 @@ struct StudentInfoView: View {
             VStack(alignment: .leading, spacing: 2) {
                 
                 
-                if self.userData.currentStudent.studentRedID != 0 {
+                if String(self.userData.currentStudent.studentRedID).count == 9 || self.userData.currentStudent.studentRedID == 0 {
                     
                     Text(String(format:"Red ID: %09d", self.userData.currentStudent.studentRedID))
                         .font(.system(.body, design: .monospaced))

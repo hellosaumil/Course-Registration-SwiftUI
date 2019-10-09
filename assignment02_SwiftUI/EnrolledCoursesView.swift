@@ -21,9 +21,11 @@ struct EnrolledCoursesView: View {
             VStack {
                 
                 // MARK: Check if No Valid Student Info Present
-                if self.userData.currentStudent.studentName == "" &&
-                    self.userData.currentStudent.studentEmail == "@" &&
-                    self.userData.currentStudent.studentRedID == 0 {
+//                if self.userData.currentStudent.studentName == "" &&
+//                    self.userData.currentStudent.studentEmail == "@" &&
+//                    self.userData.currentStudent.studentRedID == 0 {
+                
+                if !validateStudentValues(self.userData.currentStudent.studentName, self.userData.currentStudent.studentEmail, self.userData.currentStudent.studentRedID) {
                     
                     NewUserLandingView(showingModal: self.$showingModal)
                     

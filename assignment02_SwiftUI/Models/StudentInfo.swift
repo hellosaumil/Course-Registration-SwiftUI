@@ -11,7 +11,7 @@ import Foundation
 // A student has a name, email address and a red id. A course has number (CS 646), a title (iPad/iPhone Application Development), a room number (GC 1504) and a start time (7:00 pm).
 
 
-fileprivate func validateStudentValues(_ studentName:String, _ studentEmail:String, _ studentRedID:Int) -> Bool {
+func validateStudentValues(_ studentName:String, _ studentEmail:String, _ studentRedID:Int) -> Bool {
     
     guard studentEmail.contains("@") && (String(studentRedID).count == 9 || studentRedID == 0) else {
         return false
