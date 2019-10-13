@@ -30,6 +30,7 @@ struct EnrolledCoursesView: View {
                     // MARK: Display Student Info
                     VStack {
                         StudentInfoView().padding()
+                        ContextMenuButton()
                         
                         Divider()
                         
@@ -137,15 +138,20 @@ struct ContextMenuButton: View {
     @EnvironmentObject var userDataObj: UserData
     
     var body: some View {
-        VStack(alignment: .leading) {
-            Text("3D Tap for More Info")
+        HStack {
+            
+            Text("Tap for detailed student info")
                 .font(.system(.callout, design: .rounded))
                 .foregroundColor(Color.blue)
-                .contextMenu {
-                    Text("Name: \(self.userDataObj.currentStudent.studentName)")
-                    Text(String(format:"Red ID: %09d", self.userDataObj.currentStudent.studentRedID))
-                    Text("Email: \(self.userDataObj.currentStudent.studentEmail)")
-            }
+            
+            Image(systemName: "info.circle.fill")
+                .font(.system(.headline, design: .rounded))
+                .foregroundColor(Color.blue)
+        }
+        .contextMenu {
+            Text("Name: \(self.userDataObj.currentStudent.studentName)")
+            Text(String(format:"Red ID: %09d", self.userDataObj.currentStudent.studentRedID))
+            Text("Email: \(self.userDataObj.currentStudent.studentEmail)")
         }.frame(alignment: .leading)
     }
 }
